@@ -38,14 +38,7 @@ namespace DiningHallPr
             }
             
             httpServer.Stop();
-            foreach (var thread in  threadGeneration.ExtractThreads())
-            {
-                thread.Abort();
-            }
-            foreach (var thread in threadGeneration.GenerateThreads())
-            {
-                thread.Abort();
-            }
+            
             Console.WriteLine("Exiting gracefully...");
         }
     }
