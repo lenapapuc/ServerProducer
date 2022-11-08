@@ -33,6 +33,7 @@ namespace DiningHallPr
             {
                 var context = _listener.EndGetContext(result);
                 var request = context.Request;
+               
 
                 // do something with the request
                 Console.WriteLine($"{request.HttpMethod} {request.Url}");

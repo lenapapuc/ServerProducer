@@ -13,17 +13,15 @@ namespace DiningHallPr
     {
         private static Mutex mut = new Mutex();
         public static Queue<string> newQueue = new Queue<string>();
-        //public Queue mySyncdQ = Queue.Synchronized(newQueue);
         public void Generation()
         {
             while (true)
             {
-               // RandomString randomString = new RandomString();
-               // mut.WaitOne();
+                mut.WaitOne();
+               
                 string str = RandomString.RandomStrings(6);
-                //mut.ReleaseMutex();
                 newQueue.Enqueue(str);
-                
+                mut.ReleaseMutex();
                 Thread.Sleep(5000);
             }
         }
@@ -38,10 +36,8 @@ namespace DiningHallPr
                 mut.WaitOne();
                 if (newQueue.Count > 0)
                 {
-                    
                     str = newQueue.Dequeue();
-                    //if (string.IsNullOrEmpty(str)) continue ;
-                    
+                 
                 }
                 mut.ReleaseMutex();
                 using var client = new HttpClient();
@@ -49,7 +45,7 @@ namespace DiningHallPr
                 if (str != null)
                 {
                     var data = new StringContent(str, Encoding.UTF8, "application/json");
-                    client.PostAsync("http://localhost:8090/", data);
+                    client.PostAsync("http://localhost:8100/dinninghall", data);
                 }
 
                 Thread.Sleep(1000);
